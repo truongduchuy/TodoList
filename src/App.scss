@@ -1,0 +1,106 @@
+$primary-color: #4caf50;
+$secondary-color: #fff;
+
+@mixin button {
+  width: 70px;
+  background: $primary-color;
+  color: $secondary-color;
+  border-radius: 10px;
+  outline: none;
+  border: 1px solid $primary-color;
+  cursor: pointer;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.box {
+  color: $secondary-color;
+  padding: 2%;
+  margin: auto;
+  width: 600px;
+  background-color:  rgba($color: #000000, $alpha: 0.6);
+
+  h2 {
+    text-align: center;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+
+    > label {
+      margin: 25px 0 10px 0;
+    }
+
+    > input, select {
+      border-radius: 10px;
+      outline: none;
+      border: 1px solid $primary-color;
+      padding: 10px;
+
+      &:not(:last-child) {
+        width: 50%;
+      }
+    }
+
+    > div:nth-child(7) {
+      > button {
+        @include button();
+        margin: 20px 20px 0 0;
+        padding: 10px;
+      }
+
+      > button:nth-child(2) {
+        color: $primary-color;
+        background-color: $secondary-color;
+      }
+    }
+  }
+  
+  &__table {
+    margin-top: 20px;
+
+    .row:not(:last-child) {
+      border-bottom: 1px solid $secondary-color;
+    }
+
+    .row {
+      display: flex;
+
+      > *:not(:last-child) {
+        border-right: 1px solid $secondary-color;
+      }
+
+      > * {
+        flex: 1;
+        text-align: center;
+        word-break: break-all;
+        line-height: 35px;
+      }
+
+      > *:last-child {
+        flex: 2;
+
+        > button {
+          @include button();
+
+          &:first-child {
+            margin-right: 5px;
+          }
+
+          &:last-child {
+            background-color: red;
+          }
+        }
+      }
+    }
+
+    
+  }
+}
+
