@@ -21,8 +21,10 @@ $secondary-color: #fff;
   color: $secondary-color;
   padding: 2%;
   margin: auto;
-  width: 600px;
+  margin-top: 10px;
+  width: 475px;
   background-color:  rgba($color: #000000, $alpha: 0.6);
+  box-shadow: 0 3px 9px rgba(0,0,0,.5);
 
   h2 {
     text-align: center;
@@ -31,21 +33,18 @@ $secondary-color: #fff;
   &__form {
     display: flex;
     flex-direction: column;
-    // justify-content: center;
+    margin-left: 30px;
 
     > label {
       margin: 25px 0 10px 0;
     }
 
-    > input, select {
+    > *:nth-child(even) {
       border-radius: 10px;
       outline: none;
       border: 1px solid $primary-color;
       padding: 10px;
-
-      &:not(:last-child) {
-        width: 50%;
-      }
+      width: 93%;
     }
 
     > div:nth-child(7) {

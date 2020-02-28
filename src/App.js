@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
 import './App.scss';
 import TodoList from './List';
+import Header from './Header';
 
 class App extends Component {
   state = {
-    todoList: [],
+    todoList: [
+      { name: "Huy", priority: 2, endsAt: "2020-02-28" },
+      { name: "Truong", priority: 1, endsAt: "2020-02-28" },
+    ],
     todoItem: { name: "", priority: 1, endsAt: "" },
     isAdd: true,
     indexUpdate: 0
+  }
+
+  componentDidMount() {
+    if (!localStorage.getItem('isLogined'))
+      return this.props.history.push('/login');
   }
 
   initialTodoItem = { name: "", priority: 1, endsAt: "" };
@@ -50,7 +59,7 @@ class App extends Component {
   }
 
   _handleCancel = () => {
-    this.setState({ isAdd: true, indexUpdate: 0, todoItem: this.initialTodoItem })
+    this.setState({ isAdd: true, todoItem: this.initialTodoItem })
   }
 
   render() {
@@ -59,26 +68,30 @@ class App extends Component {
     const priorityOptions = [1, 2, 3, 4];
 
     return (
-      <div className="box">
-        <h2>TodoList</h2>
-        <form className="box__form" onSubmit={this._handleSubmit}>
-          <label>Name</label>
-          <input type="text" value={name} onChange={(e) => this._handleChange("name", e.target.value)} />
-          <label>Priority</label>
-          <select className="priority" value={priority} onChange={e => this._handleChange("priority", e.target.value)}>
-            {priorityOptions.map((item, index) =>
-              <option key={index} value={item}>{item}</option>
-            )}
-          </select>
-          <label>Ends At</label>
-          <input type="date" value={endsAt} onChange={e => this._handleChange('endsAt', e.target.value)} />
-          <div>
-            <button type="submit">{isAdd ? 'Add' : 'Save'}</button>
-            {!isAdd && <button onClick={this._handleCancel} type="button">Cancel</button>}
-          </div>
-        </form>
-        {todoList.length > 0 && < TodoList list={todoList} onDelete={this._handleDelete} onEdit={this._handleEdit} />}
-      </div>
+      <>
+        {console.log(this.props)}
+        <Header user={this.props.match.params.username} />
+        <div className="box">
+          <h2>TodoList</h2>
+          <form className="box__form" onSubmit={this._handleSubmit}>
+            <label>Name</label>
+            <input type="text" value={name} onChange={(e) => this._handleChange("name", e.target.value)} />
+            <label>Priority</label>
+            <select className="priority" value={priority} onChange={e => this._handleChange("priority", e.target.value)}>
+              {priorityOptions.map((item, index) =>
+                <option key={index} value={item}>{item}</option>
+              )}
+            </select>
+            <label>Ends At</label>
+            <input type="date" value={endsAt} onChange={e => this._handleChange('endsAt', e.target.value)} />
+            <div>
+              <button type="submit">{isAdd ? 'Add' : 'Save'}</button>
+              {!isAdd && <button onClick={this._handleCancel} type="button">Cancel</button>}
+            </div>
+          </form>
+          {todoList.length > 0 && < TodoList list={todoList} onDelete={this._handleDelete} onEdit={this._handleEdit} />}
+        </div>
+      </>
     )
   }
 }
