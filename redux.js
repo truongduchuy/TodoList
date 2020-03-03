@@ -54,7 +54,9 @@ store.dispatch(buyIceCream())
 
 unsubscribe()
 
-// Initial State { NumOfCakes: 10 }
-// Updated state { NumOfCakes: 9 }
-// Updated state { NumOfCakes: 8 }
-// Updated state { NumOfCakes: 7 }
+// Initial State { cake: { NumOfCakes: 10 }, iceCream: { NumOfIceCreams: 20 } }
+// Updated state { cake: { NumOfCakes: 9 }, iceCream: { NumOfIceCreams: 20 } }
+// Updated state { cake: { NumOfCakes: 8 }, iceCream: { NumOfIceCreams: 20 } }
+// Updated state { cake: { NumOfCakes: 7 }, iceCream: { NumOfIceCreams: 20 } }
+// Updated state { cake: { NumOfCakes: 7 }, iceCream: { NumOfIceCreams: 19 } }
+// Updated state { cake: { NumOfCakes: 7 }, iceCream: { NumOfIceCreams: 18 } }
