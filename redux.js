@@ -43,6 +43,7 @@ const rootReducer = combineReducers({ cake: cakeReducer, iceCream: iceCreamReduc
 
 // Create a Redux store holding the state of your app.
 // Its API is { subscribe, dispatch, getState }.
+
 const store = createStore(rootReducer);
 >>>>>>> multiple reducers
 
