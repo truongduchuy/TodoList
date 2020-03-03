@@ -1,4 +1,5 @@
-const { createStore, combineReducers } = require('redux');
+const { createStore, combineReducers, applyMiddleware } = require('redux');
+const { createLogger } = require('redux-logger');
 
 const BUY_CAKE = 'BUY_CAKE';
 const BUY_ICECREAM = 'BUY_ICECREAM';
@@ -34,9 +35,13 @@ const iceCreamReducer = (state = initialIceCreamState, action) => {
 
 const rootReducer = combineReducers({ cake: cakeReducer, iceCream: iceCreamReducer });
 
+const logger = createLogger({
+  duration: true
+});
+
 // Create a Redux store holding the state of your app.
 // Its API is { subscribe, dispatch, getState }.
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(logger));
 
 console.log('Initial State', store.getState())
 
