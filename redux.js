@@ -32,11 +32,19 @@ const iceCreamReducer = (state = initialIceCreamState, action) => {
   }
 }
 
+<<<<<<< HEAD
 const rootState = combineReducers({ cake: cakeReducer, iceCream: iceCreamReducer });
 
 // Create a Redux store holding the state of your app.
 // Its API is { subscribe, dispatch, getState }.
 const store = createStore(rootState);
+=======
+const rootReducer = combineReducers({ cake: cakeReducer, iceCream: iceCreamReducer });
+
+// Create a Redux store holding the state of your app.
+// Its API is { subscribe, dispatch, getState }.
+const store = createStore(rootReducer);
+>>>>>>> multiple reducers
 
 console.log('Initial State', store.getState())
 
