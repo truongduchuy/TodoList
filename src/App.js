@@ -1,98 +1,85 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
+
 import './App.scss';
 import TodoList from './List';
 import Header from './Header';
+import { createAction } from './redux/createAction';
+import { UPDATE_TODO_ITEM, UPDATE_TODO_LIST, TODO_ITEM_CHANGE, CANCEL_EDIT, EDIT_TODO_ITEM } from './redux/types';
+import WithLogin from './WithLogin';
 
-class App extends Component {
-  state = {
-    todoList: [
-      { name: "Huy", priority: 2, endsAt: "2020-02-28" },
-      { name: "Truong", priority: 1, endsAt: "2020-02-28" },
-    ],
-    todoItem: { name: "", priority: 1, endsAt: "" },
-    isAdd: true,
-    indexUpdate: 0
+const App = ({ todo, dispatch, match }) => {
+  const { todoList, todoItem, isAdd, indexUpdate } = todo;
+  const { name, priority, endsAt } = todoItem;
+  const priorityOptions = [1, 2, 3, 4];
+
+  const _handleChange = (key, value) => {
+    dispatch(createAction(TODO_ITEM_CHANGE, { ...todoItem, [key]: value }))
   }
 
-  componentDidMount() {
-    if (!localStorage.getItem('isLogined'))
-      return this.props.history.push('/login');
-  }
-
-  initialTodoItem = { name: "", priority: 1, endsAt: "" };
-
-  _handleChange = (key, value) => {
-    this.setState({ todoItem: { ...this.state.todoItem, [key]: value } });
-  }
-
-  _handleSubmit = (e) => {
+  const _handleSubmit = (e) => {
     e.preventDefault();
-    const { todoList, todoItem, indexUpdate, isAdd } = this.state;
-    const { name, endsAt } = todoItem;
 
     if (name === "" || endsAt === "") {
       if (name === "")
         alert("please enter your name!");
-      else alert("End At is invalid!")
+      else alert("End At is invalid!");
     }
     else {
       if (isAdd) {
-        this.setState({ todoList: [...todoList, todoItem] });
+        dispatch(createAction(UPDATE_TODO_LIST, [...todoList, todoItem]));
       }
       else {
-        this.setState({
-          todoList: todoList.map((item, index) =>
-            index === indexUpdate ? todoItem : item
-          ),
-          isAdd: true
-        });
+        dispatch(createAction(UPDATE_TODO_ITEM, todoList.map((item, index) =>
+          index === indexUpdate ? todoItem : item
+        )));
       }
     }
   }
 
-  _handleDelete = (index) => {
-    this.setState({ todoList: this.state.todoList.filter((item, i) => i !== index) });
+  const _handleDelete = (index) => {
+    dispatch(createAction(UPDATE_TODO_LIST, todoList.filter((item, i) => i !== index)));
   }
 
-  _handleEdit = (index) => {
-    this.setState({ isAdd: false, indexUpdate: index, todoItem: this.state.todoList.find((item, i) => i === index) });
+  const _handleEdit = (index) => {
+    dispatch(createAction(EDIT_TODO_ITEM, {
+      isAdd: false,
+      indexUpdate: index,
+      todoItem: todoList.find((item, i) => i === index)
+    }));
   }
 
-  _handleCancel = () => {
-    this.setState({ isAdd: true, todoItem: this.initialTodoItem })
+  const _handleCancel = () => {
+    dispatch(createAction(CANCEL_EDIT));
   }
 
-  render() {
-    const { todoList, todoItem, isAdd } = this.state;
-    const { name, priority, endsAt } = todoItem;
-    const priorityOptions = [1, 2, 3, 4];
-
-    return (
-      <>
-        {console.log(this.props)}
-        <Header user={this.props.match.params.username} />
-        <div className="box">
-          <h2>TodoList</h2>
-          <form className="box__form" onSubmit={this._handleSubmit}>
-            <label>Name</label>
-            <input type="text" value={name} onChange={(e) => this._handleChange("name", e.target.value)} />
-            <label>Priority</label>
-            <select className="priority" value={priority} onChange={e => this._handleChange("priority", e.target.value)}>
-              {priorityOptions.map((item, index) =>
-                <option key={index} value={item}>{item}</option>
-              )}
-            </select>
-            <label>Ends At</label>
-            <input type="date" value={endsAt} onChange={e => this._handleChange('endsAt', e.target.value)} />
-            <div>
-              <button type="submit">{isAdd ? 'Add' : 'Save'}</button>
-              {!isAdd && <button onClick={this._handleCancel} type="button">Cancel</button>}
-            </div>
-          </form>
-          {todoList.length > 0 && < TodoList list={todoList} onDelete={this._handleDelete} onEdit={this._handleEdit} />}
-        </div>
-      </>
-    )
-  }
+  return (
+    <>
+      <Header user={match.params.username} />
+      <div className="box">
+        <h2>TodoList</h2>
+        <form className="box__form" onSubmit={_handleSubmit}>
+          <label>Name</label>
+          <input type="text" value={name} onChange={(e) => _handleChange("name", e.target.value)} />
+          <label>Priority</label>
+          <select className="priority" value={priority} onChange={e => _handleChange("priority", e.target.value)}>
+            {priorityOptions.map((item, index) =>
+              <option key={index} value={item}>{item}</option>
+            )}
+          </select>
+          <label>Ends At</label>
+          <input type="date" value={endsAt} onChange={e => _handleChange('endsAt', e.target.value)} />
+          <div>
+            <button type="submit">{isAdd ? 'Add' : 'Save'}</button>
+            {!isAdd && <button onClick={_handleCancel} type="button">Cancel</button>}
+          </div>
+        </form>
+        {todoList.length > 0 && < TodoList list={todoList} onDelete={_handleDelete} onEdit={_handleEdit} />}
+      </div>
+    </>
+  )
 }
-export default App;
+
+export default connect(state => ({
+  todo: state.todo
+}))(WithLogin(App));

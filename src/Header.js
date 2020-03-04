@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.header`
@@ -21,6 +21,8 @@ const Container = styled.header`
       position: absolute;
       visibility: hidden;
       padding: 5px 10px 10px 10px;
+      width: 80px;
+      text-align: center;
       background: #fff;
       box-shadow: 0 2px 6px rgba(0,0,0,.5);
       top: 30px;
@@ -39,8 +41,9 @@ const Container = styled.header`
         left: 50%;
       }
 
-      > a { 
-        color: black;
+      button { 
+        border: none;
+        background: transparent;
         cursor: pointer;
       }
 
@@ -53,7 +56,7 @@ const Header = ({ history, user }) => {
   const [isToggleLogout, setIsToggleLogout] = useState(false);
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
+    localStorage.removeItem('token');
     history.push('/login');
   }
 
@@ -63,7 +66,7 @@ const Header = ({ history, user }) => {
       <div className="wrapper">
         <h3 onClick={() => setIsToggleLogout(!isToggleLogout)}>{user}</h3>
         <div>
-          <a onClick={handleLogout}>Logout</a>
+          <button type="button" onClick={handleLogout}>Log out</button>
         </div>
       </div>
     </Container>

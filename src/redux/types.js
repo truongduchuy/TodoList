@@ -1,0 +1,9 @@
+export const CHANGE_USER = 'CHANGE_USER';
+
+export const TODO_ITEM_CHANGE = 'TODO_ITEM_CHANGE';
+
+export const UPDATE_TODO_LIST = 'UPDATE_TODO_LIST';
+
+export const UPDATE_TODO_ITEM = 'UPDATE_TODO_ITEM';
+export const EDIT_TODO_ITEM = 'EDIT_TODO_ITEM';
+export const CANCEL_EDIT = 'CANCEL_EDIT';

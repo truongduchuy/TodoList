@@ -39,7 +39,7 @@ $secondary-color: #fff;
       margin: 25px 0 10px 0;
     }
 
-    > *:nth-child(even) {
+    > *:nth-child(even), select {
       border-radius: 10px;
       outline: none;
       border: 1px solid $primary-color;

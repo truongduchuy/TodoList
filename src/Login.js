@@ -1,5 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import jwt from 'jsonwebtoken';
+
+import { createAction } from "./redux/createAction";
+import { CHANGE_USER } from './redux/types';
 
 const Box = styled.div`
       width: 400px;
@@ -42,23 +47,11 @@ const Box = styled.div`
       }
     `;
 
-class Login extends Component {
-  state = {
-    user: {
-      username: '',
-      password: ''
-    }
-  }
+const Login = ({ user, history, changeUser }) => {
+  const { username, password } = user;
 
-  _handleChange = (key, value) => {
-    console.log(key, value)
-    this.setState({ user: { ...this.state.user, [key]: value } });
-  }
-
-  _handleLogin = e => {
+  const _handleLogin = e => {
     e.preventDefault();
-    const { user } = this.state
-    const { username, password } = user;
 
     if (username === '' || password === '') {
       if (username === '') {
@@ -68,26 +61,31 @@ class Login extends Component {
     }
     else {
       if (username === 'huy' && password === '123') {
-        localStorage.setItem('isLogined', true);
-        return this.props.history.push(`/todo/${username}`);
+        const token = jwt.sign({}, 'verysecure', { expiresIn: '1h' });
+
+        localStorage.setItem('token', token);
+        return history.push(`/todo/${username}`);
       }
     }
   }
 
-  render() {
-    const { username, password } = this.state.user;
 
-    return (
-      <Box>
-        <form onSubmit={this._handleLogin}>
-          <h2>Login</h2>
-          <input type="text" placeholder="username" value={username} onChange={e => this._handleChange('username', e.target.value)} />
-          <input type="password" placeholder="password" value={password} onChange={e => this._handleChange('password', e.target.value)} />
-          <button type="submit">Login</button>
-        </form>
-      </Box>
-    )
-  }
+  return (
+    <Box>
+      <form onSubmit={_handleLogin}>
+        <h2>Login</h2>
+        <input type="text" placeholder="username" value={username} onChange={e => changeUser('username', e.target.value)} />
+        <input type="password" placeholder="password" value={password} onChange={e => changeUser('password', e.target.value)} />
+        <button type="submit">Login</button>
+      </form>
+    </Box>
+  )
 }
 
-export default Login;
+const mapStateToProps = state => ({ user: state.user.user })
+
+const mapDispatchToProps = dispatch => ({
+  changeUser: (key, value) => dispatch(createAction(CHANGE_USER, { key, value })),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
