@@ -74,7 +74,7 @@ const App = ({ todo, dispatch, match }) => {
             {!isAdd && <button onClick={_handleCancel} type="button">Cancel</button>}
           </div>
         </form>
-        {todoList.length > 0 && < TodoList list={todoList} onDelete={_handleDelete} onEdit={_handleEdit} />}
+        {todoList.length > 0 && < TodoList onDelete={_handleDelete} onEdit={_handleEdit} />}
       </div>
     </>
   )

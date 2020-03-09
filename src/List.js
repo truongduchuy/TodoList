@@ -1,6 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-export default ({ list, onDelete, onEdit }) => {
+const List = ({ list, onDelete, onEdit }) => {
     return (
         <div className="box__table">
             <div className="row">
@@ -23,3 +24,5 @@ export default ({ list, onDelete, onEdit }) => {
         </div>
     );
 };
+
+export default connect(state => ({ list: state.todo.todoList }))(List);

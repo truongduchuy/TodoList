@@ -27,7 +27,7 @@ const withLogin = (WrappedComponent) => {
           history.push('/login')
         }
       }
-      else this.props.history.push('/login')
+      else history.push('/login')
 
     }
 
